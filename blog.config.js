@@ -72,3 +72,4 @@ const BLOG = {
 }
 
 module.exports = BLOG
+
