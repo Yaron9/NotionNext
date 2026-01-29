@@ -348,33 +348,23 @@ const ShareButtons = ({ post }) => {
             )
           case 'wechat':
             return (
-              <span key={singleService} className='inline-block mx-1'>
-                <button
-                  type='button'
-                  onClick={() => setQrCodeShow(prev => !prev)}
-                  aria-label={singleService}
-                  className='cursor-pointer bg-green-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center'>
-                  <i className='fab fa-weixin text-lg' />
-                </button>
-                {qrCodeShow && (
-                  <>
-                    <div className='fixed inset-0 z-40' onClick={() => setQrCodeShow(false)} />
-                    <div className='fixed inset-0 z-50 flex items-center justify-center pointer-events-none'>
-                      <div className='bg-white shadow-2xl rounded-lg text-center pointer-events-auto p-4' onClick={(e) => e.stopPropagation()}>
-                        <div className='w-48 h-48'>
-                          <QrCode value={shareUrl} />
-                        </div>
-                        <span className='block text-black font-semibold text-sm mt-2'>
-                          {locale.COMMON.SCAN_QR_CODE}
-                        </span>
-                        <button type='button' onClick={() => setQrCodeShow(false)} className='mt-2 text-gray-400 hover:text-gray-600 text-xs'>
-                          关闭
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </span>
+              <button
+                type='button'
+                onClick={() => {
+                  const decodedUrl = decodeURIComponent(shareUrl)
+                  if (navigator?.clipboard?.writeText) {
+                    navigator.clipboard.writeText(decodedUrl).then(() => {
+                      alert('\u94fe\u63a5\u5df2\u590d\u5236\uff0c\u53ef\u7c98\u8d34\u53d1\u9001\u7ed9\u5fae\u4fe1\u597d\u53cb\n' + decodedUrl)
+                    })
+                  } else {
+                    prompt('\u590d\u5236\u4e0b\u65b9\u94fe\u63a5\u53d1\u9001\u7ed9\u5fae\u4fe1\u597d\u53cb\uff1a', decodedUrl)
+                  }
+                }}
+                aria-label={singleService}
+                key={singleService}
+                className='cursor-pointer bg-green-600 text-white rounded-full mx-1 w-8 h-8 inline-flex items-center justify-center'>
+                <i className='fab fa-weixin text-lg' />
+              </button>
             )
           case 'link':
             return (
