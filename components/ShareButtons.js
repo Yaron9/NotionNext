@@ -348,26 +348,33 @@ const ShareButtons = ({ post }) => {
             )
           case 'wechat':
             return (
-              <button
-                type='button'
-                onClick={(e) => { e.stopPropagation(); setQrCodeShow(prev => !prev) }}
-                aria-label={singleService}
-                key={singleService}
-                className='cursor-pointer bg-green-600 text-white rounded-full mx-1 relative w-8 h-8 flex items-center justify-center'>
-                <i className='fab fa-weixin text-lg' />
+              <span key={singleService} className='inline-block mx-1'>
+                <button
+                  type='button'
+                  onClick={() => setQrCodeShow(prev => !prev)}
+                  aria-label={singleService}
+                  className='cursor-pointer bg-green-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center'>
+                  <i className='fab fa-weixin text-lg' />
+                </button>
                 {qrCodeShow && (
-                  <div
-                    className='z-50 absolute bottom-10 left-1/2 -translate-x-1/2 bg-white shadow-xl rounded-lg text-center'
-                    onClick={(e) => e.stopPropagation()}>
-                    <div className='p-2 w-36 h-36'>
-                      <QrCode value={shareUrl} />
+                  <>
+                    <div className='fixed inset-0 z-40' onClick={() => setQrCodeShow(false)} />
+                    <div className='fixed inset-0 z-50 flex items-center justify-center pointer-events-none'>
+                      <div className='bg-white shadow-2xl rounded-lg text-center pointer-events-auto p-4' onClick={(e) => e.stopPropagation()}>
+                        <div className='w-48 h-48'>
+                          <QrCode value={shareUrl} />
+                        </div>
+                        <span className='block text-black font-semibold text-sm mt-2'>
+                          {locale.COMMON.SCAN_QR_CODE}
+                        </span>
+                        <button type='button' onClick={() => setQrCodeShow(false)} className='mt-2 text-gray-400 hover:text-gray-600 text-xs'>
+                          关闭
+                        </button>
+                      </div>
                     </div>
-                    <span className='block text-black font-semibold text-sm pb-2'>
-                      {locale.COMMON.SCAN_QR_CODE}
-                    </span>
-                  </div>
+                  </>
                 )}
-              </button>
+              </span>
             )
           case 'link':
             return (
@@ -430,4 +437,5 @@ const ShareButtons = ({ post }) => {
 }
 
 export default ShareButtons
+
 
