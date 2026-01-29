@@ -282,7 +282,7 @@ const LayoutSlug = props => {
           {/* <AdSlot type={'in-article'} /> */}
           <WWAds orientation='horizontal' className='w-full' />
 
-          <div id='article-wrapper'>
+          <div id='article-wrapper' className='rounded-lg p-4 md:p-6' style={{ backgroundColor: 'rgba(255, 248, 240, 0.5)' }}>
             {/* Notion 文章主体 */}
             {!lock && <NotionPage post={post} />}
           </div>
@@ -414,4 +414,5 @@ export {
   LayoutTagIndex,
   CONFIG as THEME_CONFIG
 }
+
 
