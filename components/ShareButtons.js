@@ -349,28 +349,24 @@ const ShareButtons = ({ post }) => {
           case 'wechat':
             return (
               <button
-                onClick={() => setQrCodeShow(!qrCodeShow)}
+                type='button'
+                onClick={(e) => { e.stopPropagation(); setQrCodeShow(prev => !prev) }}
                 aria-label={singleService}
                 key={singleService}
-                className='cursor-pointer bg-green-600 text-white rounded-full mx-1 relative'>
-                <div id='wechat-button'>
-                  <i className='fab fa-weixin w-8' />
-                </div>
-                <div className='absolute'>
+                className='cursor-pointer bg-green-600 text-white rounded-full mx-1 relative w-8 h-8 flex items-center justify-center'>
+                <i className='fab fa-weixin text-lg' />
+                {qrCodeShow && (
                   <div
-                    id='pop'
-                    className={
-                      (qrCodeShow ? 'opacity-100 ' : ' invisible opacity-0') +
-                      ' z-40 absolute bottom-12 -left-10 bg-white shadow-xl rounded-lg transition-all duration-200 text-center'
-                    }>
-                    <div className='p-2 mt-1 w-32 h-32'>
-                      {qrCodeShow && <QrCode value={shareUrl} />}
+                    className='z-50 absolute bottom-10 left-1/2 -translate-x-1/2 bg-white shadow-xl rounded-lg text-center'
+                    onClick={(e) => e.stopPropagation()}>
+                    <div className='p-2 w-36 h-36'>
+                      <QrCode value={shareUrl} />
                     </div>
-                    <span className='text-black font-semibold p-1 rounded-t-lg text-sm mx-auto mb-1'>
+                    <span className='block text-black font-semibold text-sm pb-2'>
                       {locale.COMMON.SCAN_QR_CODE}
                     </span>
                   </div>
-                </div>
+                )}
               </button>
             )
           case 'link':
@@ -434,3 +430,4 @@ const ShareButtons = ({ post }) => {
 }
 
 export default ShareButtons
+
