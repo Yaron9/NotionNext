@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useRef } from 'react'
 import BlogPostBar from './components/BlogPostBar'
 import { BlogItem } from './components/BlogItem'
+import ShareBar from '@/components/ShareBar'
 import CONFIG from './config'
 import { Style } from './style'
 import Catalog from './components/Catalog'
@@ -287,7 +288,7 @@ const LayoutSlug = props => {
           </div>
 
           {/* 分享 */}
-          {/* <ShareBar post={post} /> */}
+          <ShareBar post={post} />
 
           {/* 广告嵌入 */}
           <AdSlot type={'in-article'} />
