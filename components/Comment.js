@@ -99,7 +99,7 @@ const Comment = ({ frontMatter, className }) => {
           )}
 
           {COMMENT_TWIKOO_ENV_ID && (
-            <div key='Twikoo'>
+            <div key='💬 说点什么吧'>
               <TwikooCompenent />
             </div>
           )}
@@ -205,3 +205,4 @@ const ValineComponent = dynamic(() => import('@/components/ValineComponent'), {
 })
 
 export default Comment
+
