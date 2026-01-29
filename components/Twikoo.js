@@ -51,7 +51,7 @@ const Twikoo = ({ isDarkMode }) => {
   return (
     <div>
       <p className='text-center text-sm text-gray-500 dark:text-gray-400 mb-2'>
-        无需登录，昵称和邮箱选填
+        欢迎留言，期待你的想法 ✨
       </p>
       <div id="twikoo"></div>
     </div>
