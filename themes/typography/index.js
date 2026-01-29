@@ -294,14 +294,16 @@ const LayoutSlug = props => {
           <AdSlot type={'in-article'} />
 
           {post?.type === 'Post' && (
-            <>
+            <div className='bg-white/80 dark:bg-gray-800/80 rounded-lg p-4 mt-4'>
               <ArticleAround prev={prev} next={next} />
               <RecommendPosts recommendPosts={recommendPosts} />
-            </>
+            </div>
           )}
 
           {/* 评论区 */}
-          <Comment frontMatter={post} />
+          <div className='bg-white/80 dark:bg-gray-800/80 rounded-lg p-4 mt-4'>
+            <Comment frontMatter={post} />
+          </div>
         </div>
       )}
     </>
@@ -412,3 +414,4 @@ export {
   LayoutTagIndex,
   CONFIG as THEME_CONFIG
 }
+
