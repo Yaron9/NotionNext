@@ -3,10 +3,8 @@ import { loadExternalResource } from '@/lib/utils'
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * Giscus评论 @see https://giscus.app/zh-CN
- * Contribute by @txs https://github.com/txs/NotionNext/commit/1bf7179d0af21fb433e4c7773504f244998678cb
+ * Twikoo评论组件
  * @returns {JSX.Element}
- * @constructor
  */
 
 const Twikoo = ({ isDarkMode }) => {
@@ -26,11 +24,9 @@ const Twikoo = ({ isDarkMode }) => {
         typeof twikoo.init === 'function'
       ) {
         twikoo.init({
-          envId: envId, // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
-          el: el, // 容器元素
-          lang: lang // 用于手动设定评论区语言，支持的语言列表 https://github.com/imaegoo/twikoo/blob/main/src/client/utils/i18n/index.js
-          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
-          // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          envId: envId,
+          el: el,
+          lang: lang
         })
         console.log('twikoo init', twikoo)
         isInit.current = true
@@ -43,7 +39,7 @@ const Twikoo = ({ isDarkMode }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (isInit.current) {
-        console.log('twioo init! clear interval')
+        console.log('twikoo init! clear interval')
         clearInterval(interval)
       } else {
         loadTwikoo()
@@ -51,7 +47,15 @@ const Twikoo = ({ isDarkMode }) => {
     }, 1000)
     return () => clearInterval(interval)
   }, [isDarkMode])
-  return <div id="twikoo"></div>
+
+  return (
+    <div>
+      <p className='text-center text-sm text-gray-500 dark:text-gray-400 mb-2'>
+        无需登录，昵称和邮箱选填
+      </p>
+      <div id="twikoo"></div>
+    </div>
+  )
 }
 
 export default Twikoo
