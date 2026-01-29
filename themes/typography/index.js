@@ -9,6 +9,7 @@ import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useRef } from 'react'
 import BlogPostBar from './components/BlogPostBar'
+import { BlogItem } from './components/BlogItem'
 import CONFIG from './config'
 import { Style } from './style'
 import Catalog from './components/Catalog'
@@ -124,13 +125,53 @@ const LayoutBase = props => {
 }
 
 /**
+ * 按分类分组文章
+ */
+function groupArticlesByCategory(articles) {
+  const grouped = {}
+  for (const article of articles) {
+    const cat = article.category || '未分类'
+    if (!grouped[cat]) {
+      grouped[cat] = []
+    }
+    grouped[cat].push(article)
+  }
+  return Object.entries(grouped).map(([category, posts]) => ({ category, posts }))
+}
+
+/**
  * 博客首页
- * 首页就是列表
+ * 按分类展示文章
  * @param {*} props
  * @returns
  */
 const LayoutIndex = props => {
-  return <LayoutPostList {...props} />
+  const { posts } = props
+  const categoryGroups = groupArticlesByCategory(posts || [])
+
+  return (
+    <>
+      <BlogPostBar {...props} />
+      <div className='w-full md:pr-8 mb-12 px-5'>
+        {categoryGroups.map(group => (
+          <div key={group.category} className='mb-8'>
+            <SmartLink
+              href={`/category/${group.category}`}
+              className='inline-block text-lg font-bold border-b-2 border-current pb-1 mb-2 text-[var(--primary-color)] dark:text-gray-200 hover:opacity-70 transition-opacity no-underline'>
+              <i className='fa-regular fa-folder mr-2' />
+              {group.category}
+              <span className='ml-2 text-sm font-normal opacity-60'>({group.posts.length})</span>
+            </SmartLink>
+            <div id='posts-wrapper'>
+              {group.posts.map(p => (
+                <BlogItem key={p.id} post={p} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  )
 }
 /**
  * 博客列表
