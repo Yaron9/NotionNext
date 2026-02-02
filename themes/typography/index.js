@@ -142,34 +142,67 @@ function groupArticlesByCategory(articles) {
 
 /**
  * 博客首页
- * 按分类展示文章
- * @param {*} props
- * @returns
+ * 结构：最新发布（hero）→ 推荐阅读 → 全部文章（时间倒序）
  */
 const LayoutIndex = props => {
   const { posts } = props
-  const categoryGroups = groupArticlesByCategory(posts || [])
+  const allPosts = posts || []
+
+  // 最新一篇突出展示
+  const latestPost = allPosts[0]
+
+  // 推荐阅读：Notion 中标记「推荐」标签的文章
+  const recommendedPosts = allPosts.filter(
+    p => p.tags && p.tags.includes('推荐')
+  )
+
+  // 剩余文章（跳过 hero 避免重复）
+  const restPosts = allPosts.slice(1)
 
   return (
     <>
       <BlogPostBar {...props} />
       <div className='w-full md:pr-8 mb-12 px-5'>
-        {categoryGroups.map(group => (
-          <div key={group.category} className='mb-8'>
-            <SmartLink
-              href={`/category/${group.category}`}
-              className='inline-block text-lg font-bold border-b-2 border-current pb-1 mb-2 text-[var(--primary-color)] dark:text-gray-200 hover:opacity-70 transition-opacity no-underline'>
-              <i className='fa-regular fa-folder mr-2' />
-              {group.category}
-              <span className='ml-2 text-sm font-normal opacity-60'>({group.posts.length})</span>
-            </SmartLink>
+
+        {/* ---- 最新发布 Hero ---- */}
+        {latestPost && (
+          <div className='mb-12'>
+            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+              <i className='fa-solid fa-bolt mr-2' />最新发布
+            </h2>
             <div id='posts-wrapper'>
-              {group.posts.map(p => (
+              <BlogItem post={latestPost} />
+            </div>
+          </div>
+        )}
+
+        {/* ---- 推荐阅读 ---- */}
+        {recommendedPosts.length > 0 && (
+          <div className='mb-12'>
+            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+              <i className='fa-solid fa-star mr-2' />推荐阅读
+            </h2>
+            <div id='posts-wrapper'>
+              {recommendedPosts.map(p => (
                 <BlogItem key={p.id} post={p} />
               ))}
             </div>
           </div>
-        ))}
+        )}
+
+        {/* ---- 全部文章（按时间倒序） ---- */}
+        {restPosts.length > 0 && (
+          <div className='mb-8'>
+            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+              <i className='fa-regular fa-newspaper mr-2' />全部文章
+            </h2>
+            <div id='posts-wrapper'>
+              {restPosts.map(p => (
+                <BlogItem key={p.id} post={p} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
