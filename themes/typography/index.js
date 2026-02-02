@@ -173,7 +173,7 @@ const LayoutIndex = props => {
                 <SmartLink
                   key={name}
                   href={'/category/' + name}
-                  className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border border-gray-200 dark:border-gray-600 text-[var(--primary-color)] dark:text-gray-300 hover:bg-[var(--primary-color)] hover:text-white dark:hover:bg-gray-600 transition-all duration-200 no-underline'>
+                  className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold border-2 border-[var(--primary-color)] dark:border-gray-400 text-[var(--primary-color)] dark:text-gray-200 hover:bg-[var(--primary-color)] hover:text-white dark:hover:bg-gray-600 transition-all duration-200 no-underline'>
                   <i className='fa-regular fa-folder' />
                   {name}
                   <span className='opacity-50'>({count})</span>
@@ -186,7 +186,7 @@ const LayoutIndex = props => {
         {/* ---- 最新发布 Hero ---- */}
         {latestPost && (
           <div className='mb-12'>
-            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+            <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
               <i className='fa-solid fa-bolt mr-2' />最新发布
             </h2>
             <div id='posts-wrapper'>
@@ -198,7 +198,7 @@ const LayoutIndex = props => {
         {/* ---- 推荐阅读 ---- */}
         {recommendedPosts.length > 0 && (
           <div className='mb-12'>
-            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+            <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
               <i className='fa-solid fa-star mr-2' />推荐阅读
             </h2>
             <div id='posts-wrapper'>
@@ -212,7 +212,7 @@ const LayoutIndex = props => {
         {/* ---- 全部文章（按时间倒序） ---- */}
         {restPosts.length > 0 && (
           <div className='mb-8'>
-            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+            <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
               <i className='fa-regular fa-newspaper mr-2' />全部文章
             </h2>
             <div id='posts-wrapper'>
