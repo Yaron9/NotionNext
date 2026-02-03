@@ -209,6 +209,57 @@ const LayoutIndex = props => {
           </div>
         )}
 
+        {/* ---- 关于我 ---- */}
+        <div className='mb-12'>
+          <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
+            <i className='fa-solid fa-user mr-2' />关于我
+          </h2>
+          <div className='rounded-lg border border-gray-200 dark:border-gray-700 p-5 bg-gray-50/80 dark:bg-gray-800/60'>
+            <div className='space-y-2.5 text-sm'>
+              <div className='flex items-center gap-2'>
+                <span>🎙️</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>播客</span>
+                <span className='text-gray-400'>|</span>
+                <span className='text-gray-600 dark:text-gray-400'>遇见大王2025（小宇宙）</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>📝</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>公众号</span>
+                <span className='text-gray-400'>|</span>
+                <span className='text-gray-600 dark:text-gray-400'>遇见大王2025</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>🌐</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>博客</span>
+                <span className='text-gray-400'>|</span>
+                <a href='https://aidawang.de5.net' target='_blank' rel='noopener noreferrer' className='text-[var(--primary-color)] hover:underline'>aidawang.de5.net</a>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>📮</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>邮箱</span>
+                <span className='text-gray-400'>|</span>
+                <a href='mailto:yaron999999@gmail.com' className='text-[var(--primary-color)] hover:underline'>yaron999999@gmail.com</a>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>🐙</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>GitHub</span>
+                <span className='text-gray-400'>|</span>
+                <a href='https://github.com/Yaron9' target='_blank' rel='noopener noreferrer' className='text-[var(--primary-color)] hover:underline'>github.com/Yaron9</a>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>⭐</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>推荐项目</span>
+                <span className='text-gray-400'>|</span>
+                <span className='text-gray-600 dark:text-gray-400'>MetaMe — </span>
+                <a href='https://github.com/Yaron9/MetaMe' target='_blank' rel='noopener noreferrer' className='text-[var(--primary-color)] hover:underline'>github.com/Yaron9/MetaMe</a>
+              </div>
+            </div>
+            <p className='mt-4 pt-3 border-t border-gray-200 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400'>
+              全球AI咨询早知道 · 用 AI 过好每一天
+            </p>
+          </div>
+        </div>
+
         {/* ---- 全部文章（按时间倒序） ---- */}
         {restPosts.length > 0 && (
           <div className='mb-8'>
