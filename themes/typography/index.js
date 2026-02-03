@@ -164,24 +164,20 @@ const LayoutIndex = props => {
       <div className='w-full md:pr-8 mb-12 px-5'>
 
         {/* ---- 分类导航 ---- */}
-        {(() => {
-          const cats = {}
-          allPosts.forEach(p => { const c = p.category || '未分类'; cats[c] = (cats[c] || 0) + 1 })
-          return (
-            <div className='flex flex-wrap gap-3 mb-10 pb-4 border-b border-gray-200 dark:border-gray-700'>
-              {Object.entries(cats).map(([name, count]) => (
-                <SmartLink
-                  key={name}
-                  href={'/category/' + name}
-                  className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold border-2 border-[var(--primary-color)] dark:border-gray-400 text-[var(--primary-color)] dark:text-gray-200 hover:bg-[var(--primary-color)] hover:text-white dark:hover:bg-gray-600 transition-all duration-200 no-underline'>
-                  <i className='fa-regular fa-folder' />
-                  {name}
-                  <span className='opacity-50'>({count})</span>
-                </SmartLink>
-              ))}
-            </div>
-          )
-        })()}
+        {props.categoryOptions && props.categoryOptions.length > 0 && (
+          <div className='flex flex-wrap gap-3 mb-10 pb-4 border-b border-gray-200 dark:border-gray-700'>
+            {props.categoryOptions.map(cat => (
+              <SmartLink
+                key={cat.name}
+                href={'/category/' + cat.name}
+                className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold border-2 border-[var(--primary-color)] dark:border-gray-400 text-[var(--primary-color)] dark:text-gray-200 hover:bg-[var(--primary-color)] hover:text-white dark:hover:bg-gray-600 transition-all duration-200 no-underline'>
+                <i className='fa-regular fa-folder' />
+                {cat.name}
+                <span className='opacity-50'>({cat.count})</span>
+              </SmartLink>
+            ))}
+          </div>
+        )}
 
         {/* ---- 最新发布 Hero ---- */}
         {latestPost && (
