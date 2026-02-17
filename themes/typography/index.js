@@ -125,12 +125,75 @@ const LayoutBase = props => {
 
 /**
  * 博客首页
- * 首页就是列表
+ * 结构：置顶文章（推荐标签）→ 最新发布 → 全部文章（时间倒序）
  * @param {*} props
  * @returns
  */
 const LayoutIndex = props => {
-  return <LayoutPostList {...props} />
+  const { posts } = props
+  const allPosts = posts || []
+
+  // 置顶文章：Notion 中标记「推荐」标签的文章
+  const pinnedPosts = allPosts.filter(
+    p => p.tags && p.tags.includes('推荐')
+  )
+
+  // 非置顶文章，按时间倒序
+  const normalPosts = allPosts.filter(
+    p => !(p.tags && p.tags.includes('推荐'))
+  )
+
+  // 最新一篇
+  const latestPost = normalPosts[0]
+  const restPosts = normalPosts.slice(1)
+
+  return (
+    <>
+      <BlogPostBar {...props} />
+      <div className='w-full md:pr-8 mb-12 px-5'>
+
+        {/* ---- 置顶文章 ---- */}
+        {pinnedPosts.length > 0 && (
+          <div className='mb-12'>
+            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+              <i className='fa-solid fa-thumbtack mr-2' />置顶文章
+            </h2>
+            <div id='posts-wrapper'>
+              {pinnedPosts.map(p => (
+                <BlogItem key={p.id} post={p} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ---- 最新发布 ---- */}
+        {latestPost && (
+          <div className='mb-12'>
+            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+              <i className='fa-solid fa-bolt mr-2' />最新发布
+            </h2>
+            <div id='posts-wrapper'>
+              <BlogItem post={latestPost} />
+            </div>
+          </div>
+        )}
+
+        {/* ---- 全部文章（按时间倒序） ---- */}
+        {restPosts.length > 0 && (
+          <div className='mb-8'>
+            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+              <i className='fa-regular fa-newspaper mr-2' />全部文章
+            </h2>
+            <div id='posts-wrapper'>
+              {restPosts.map(p => (
+                <BlogItem key={p.id} post={p} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  )
 }
 /**
  * 博客列表
