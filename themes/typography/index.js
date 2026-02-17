@@ -9,6 +9,8 @@ import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useRef } from 'react'
 import BlogPostBar from './components/BlogPostBar'
+import { BlogItem } from './components/BlogItem'
+import ShareBar from '@/components/ShareBar'
 import CONFIG from './config'
 import { Style } from './style'
 import Catalog from './components/Catalog'
@@ -124,10 +126,23 @@ const LayoutBase = props => {
 }
 
 /**
+ * 按分类分组文章
+ */
+function groupArticlesByCategory(articles) {
+  const grouped = {}
+  for (const article of articles) {
+    const cat = article.category || '未分类'
+    if (!grouped[cat]) {
+      grouped[cat] = []
+    }
+    grouped[cat].push(article)
+  }
+  return Object.entries(grouped).map(([category, posts]) => ({ category, posts }))
+}
+
+/**
  * 博客首页
- * 结构：置顶文章（推荐标签）→ 最新发布 → 全部文章（时间倒序）
- * @param {*} props
- * @returns
+ * 结构：最新发布（hero）→ 推荐阅读 → 全部文章（时间倒序）
  */
 const LayoutIndex = props => {
   const { posts } = props
@@ -143,19 +158,36 @@ const LayoutIndex = props => {
     p => !(p.tags && p.tags.includes('推荐'))
   )
 
-  // 最新一篇
+  // 最新一篇非置顶文章
   const latestPost = normalPosts[0]
+
+  // 剩余文章（跳过最新一篇）
   const restPosts = normalPosts.slice(1)
 
   return (
     <>
-      <BlogPostBar {...props} />
       <div className='w-full md:pr-8 mb-12 px-5'>
+
+        {/* ---- 分类导航 ---- */}
+        {props.categoryOptions && props.categoryOptions.length > 0 && (
+          <div className='flex flex-wrap gap-3 mb-10 pb-4 border-b border-gray-200 dark:border-gray-700'>
+            {props.categoryOptions.map(cat => (
+              <SmartLink
+                key={cat.name}
+                href={'/category/' + cat.name}
+                className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold border-2 border-[var(--primary-color)] dark:border-gray-400 text-[var(--primary-color)] dark:text-gray-200 hover:bg-[var(--primary-color)] hover:text-white dark:hover:bg-gray-600 transition-all duration-200 no-underline'>
+                <i className='fa-regular fa-folder' />
+                {cat.name}
+                <span className='opacity-50'>({cat.count})</span>
+              </SmartLink>
+            ))}
+          </div>
+        )}
 
         {/* ---- 置顶文章 ---- */}
         {pinnedPosts.length > 0 && (
           <div className='mb-12'>
-            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+            <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
               <i className='fa-solid fa-thumbtack mr-2' />置顶文章
             </h2>
             <div id='posts-wrapper'>
@@ -169,7 +201,7 @@ const LayoutIndex = props => {
         {/* ---- 最新发布 ---- */}
         {latestPost && (
           <div className='mb-12'>
-            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+            <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
               <i className='fa-solid fa-bolt mr-2' />最新发布
             </h2>
             <div id='posts-wrapper'>
@@ -178,10 +210,61 @@ const LayoutIndex = props => {
           </div>
         )}
 
+        {/* ---- 关于我 ---- */}
+        <div className='mb-12'>
+          <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
+            <i className='fa-solid fa-user mr-2' />关于我
+          </h2>
+          <div className='rounded-lg border border-gray-200 dark:border-gray-700 p-5 bg-gray-50/80 dark:bg-gray-800/60'>
+            <div className='space-y-2.5 text-sm'>
+              <div className='flex items-center gap-2'>
+                <span>🎙️</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>播客</span>
+                <span className='text-gray-400'>|</span>
+                <span className='text-gray-600 dark:text-gray-400'>遇见大王2025（小宇宙）</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>📝</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>公众号</span>
+                <span className='text-gray-400'>|</span>
+                <span className='text-gray-600 dark:text-gray-400'>遇见大王2025</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>🌐</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>博客</span>
+                <span className='text-gray-400'>|</span>
+                <a href='https://aidawang.de5.net' target='_blank' rel='noopener noreferrer' className='text-[var(--primary-color)] hover:underline'>aidawang.de5.net</a>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>📮</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>邮箱</span>
+                <span className='text-gray-400'>|</span>
+                <a href='mailto:yaron999999@gmail.com' className='text-[var(--primary-color)] hover:underline'>yaron999999@gmail.com</a>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>🐙</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>GitHub</span>
+                <span className='text-gray-400'>|</span>
+                <a href='https://github.com/Yaron9' target='_blank' rel='noopener noreferrer' className='text-[var(--primary-color)] hover:underline'>github.com/Yaron9</a>
+              </div>
+              <div className='flex items-center gap-2'>
+                <span>⭐</span>
+                <span className='font-bold text-gray-700 dark:text-gray-300'>推荐项目</span>
+                <span className='text-gray-400'>|</span>
+                <span className='text-gray-600 dark:text-gray-400'>MetaMe — </span>
+                <a href='https://github.com/Yaron9/MetaMe' target='_blank' rel='noopener noreferrer' className='text-[var(--primary-color)] hover:underline'>github.com/Yaron9/MetaMe</a>
+              </div>
+            </div>
+            <p className='mt-4 pt-3 border-t border-gray-200 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400'>
+              全球AI咨询早知道 · 用 AI 过好每一天
+            </p>
+          </div>
+        </div>
+
         {/* ---- 全部文章（按时间倒序） ---- */}
         {restPosts.length > 0 && (
           <div className='mb-8'>
-            <h2 className='text-lg font-bold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-200 border-b border-gray-200 dark:border-gray-700'>
+            <h2 className='text-xl font-extrabold pb-2 mb-4 text-[var(--primary-color)] dark:text-gray-100 border-b-2 border-[var(--primary-color)] dark:border-gray-500'>
               <i className='fa-regular fa-newspaper mr-2' />全部文章
             </h2>
             <div id='posts-wrapper'>
@@ -303,26 +386,28 @@ const LayoutSlug = props => {
           {/* <AdSlot type={'in-article'} /> */}
           <WWAds orientation='horizontal' className='w-full' />
 
-          <div id='article-wrapper'>
+          <div id='article-wrapper' className='rounded-lg p-4 md:p-6' style={{ backgroundColor: 'rgba(255, 248, 240, 0.5)' }}>
             {/* Notion 文章主体 */}
             {!lock && <NotionPage post={post} />}
           </div>
 
           {/* 分享 */}
-          {/* <ShareBar post={post} /> */}
+          <ShareBar post={post} />
 
           {/* 广告嵌入 */}
           <AdSlot type={'in-article'} />
 
           {post?.type === 'Post' && (
-            <>
+            <div className='bg-white/80 dark:bg-gray-800/80 rounded-lg p-4 mt-4'>
               <ArticleAround prev={prev} next={next} />
               <RecommendPosts recommendPosts={recommendPosts} />
-            </>
+            </div>
           )}
 
           {/* 评论区 */}
-          <Comment frontMatter={post} />
+          <div className='bg-white/80 dark:bg-gray-800/80 rounded-lg p-4 mt-4'>
+            <Comment frontMatter={post} />
+          </div>
         </div>
       )}
     </>
@@ -433,3 +518,5 @@ export {
   LayoutTagIndex,
   CONFIG as THEME_CONFIG
 }
+
+
