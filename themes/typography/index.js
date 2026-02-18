@@ -153,10 +153,10 @@ const LayoutIndex = props => {
     p => p.tags && p.tags.includes('推荐')
   )
 
-  // 非置顶文章，按发布日期倒序排列
-  const normalPosts = allPosts
-    .filter(p => !(p.tags && p.tags.includes('推荐')))
-    .sort((a, b) => new Date(b.publishDate || b.date || b.createdTime) - new Date(a.publishDate || a.date || a.createdTime))
+  // 非置顶文章（已按日期倒序排列）
+  const normalPosts = allPosts.filter(
+    p => !(p.tags && p.tags.includes('推荐'))
+  )
 
   // 最新一篇非置顶文章
   const latestPost = normalPosts[0]
